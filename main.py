@@ -4,24 +4,10 @@
 import random
 # -------------------------------------------------------------------------------
 # -------------------------------------------------------------------------------
-# INTRO|
-# -------------------------------------------------------------------------------
-username = str(input("What's your name?: "))
-print("WELCOME TO CAVE GAME, " + username.upper() + "!")
-# -------------------------------------------------------------------------------
-# Var|
-# -------------------------------------------------------------------------------
-day = 1
-year = 1
-opener = ''
-l_inv = []
-morality = 0
-gold = 0
-
-
-# -------------------------------------------------------------------------------
 # Func|
 # -------------------------------------------------------------------------------
+
+
 def day_ini():
     print()
     print("DAY:", str(day), ",", username.upper(), ",", "GOLD:", gold)
@@ -70,6 +56,21 @@ def debug_stats():
 
 
 # -------------------------------------------------------------------------------
+# INTRO|
+# -------------------------------------------------------------------------------
+username = str(input("What's your name?: "))
+clear()
+print("WELCOME TO CAVE GAME, " + username.upper() + "!")
+# -------------------------------------------------------------------------------
+# Var|
+# -------------------------------------------------------------------------------
+day = 1
+year = 1
+opener = ''
+l_inv = []
+morality = 0
+gold = 0
+# -------------------------------------------------------------------------------
 # Dungeon cell|
 # -------------------------------------------------------------------------------
 additional = False
@@ -102,7 +103,7 @@ while True:
     elif e == 3:
         if 'KEY' in l_inv:
             print("CONGRATULATIONS. THE DOOR IS UNLOCKED.")
-            break
+            break  # LOOP BREAK
         else:
             print("THE DOOR WILL NOT BUDGE.")
     elif e == 4 and 'COOL LADYBUG' not in l_inv:
@@ -112,7 +113,7 @@ while True:
         print("YOU NOTICED THE KEY HIDDEN IN YOUR BEDSHEET, AND PICKED IT UP.")
         print("YOU OBTAINED [KEY]")
         l_inv.append("KEY")
-    else:
+    else:  # VALIDATION
         print("UNKNOWN COMMAND.")
 # -------------------------------------------------------------------------------
 # Main dungeon|
@@ -129,7 +130,7 @@ while True:
         print("4.TRY THE FOURTH CELL")
     print("5.MOVE FORWARDS")
     if 'BOOK OF FLAME' in l_inv and 'COOL LADYBUG' in l_inv:
-        print("6. BURN LADYBUG AS A SACRIFICIAL EFFIGY TO THE SECOND CELL")
+        print("6. BURN LADYBUG AS A SACRIFICIAL EFFIGY TO THE THIRD CELL")
     e = int(input("WHAT WILL YOU DO?: "))
     clear()
     if e == 1:
@@ -156,14 +157,15 @@ while True:
                 print("???: VERY WELL.")
                 print("THE SHADOW FIGURE VANISHES")
     elif e == 3 and 'BOOK OF FLAME' not in l_inv:
-        print("THERE IS A MAN IN THE CELL.")
-        if 'COIN?' in l_inv:
+        if 'MARK OF ZENO' in l_inv:
+        elif 'COIN?' in l_inv or 'MARK OF ZENO' in l_inv:
+            print("THERE IS A MAN IN THE CELL.")
             print("MAN: 'YOUNG ONE.'")
             print("MAN: 'I BESTOW UPON THEE UNUSUAL KNOWLEDGE.'")
             print("MAN: 'JUST GIVE ME THE SHINY.'")
             print()
             print("1.YES 2.NO")
-            bc = int(input("WILL YOU GIVE HIM THE KEY?: "))
+            bc = int(input("WILL YOU GIVE HIM THE COIN?: "))
             clear()
             if bc == 1:
                 l_inv.remove('COIN?')
@@ -171,6 +173,7 @@ while True:
                 l_inv.append('BOOK OF FLAME')
             elif bc == 2:
                 print("THIS WILL BRING REGRET UPON YOUR LIFE,", username.upper())
+                l_inv.append('MARK OF ZENO')
             bc = 0
     elif e == 4 and 'COIN?' not in l_inv:
         print("THERE SEEMS TO BE A WAY OUT THROUGH THE WEAKNESS IN THIS CELL'S WALL")
@@ -191,6 +194,8 @@ while True:
             l_inv.remove('KEY')
             l_inv.append('GOLDEN EFFIGY TO MAD GOD')
             morality -= 1
+    else:
+        print("UNKNOWN COMMAND.")
 if 'COIN?' in l_inv:
     l_inv.remove('COIN?')
     print("UPON CLOSER INVESTIGATION, THIS WAS INDEED AN INCREDIBLY RARE IMPERIAL COIN")
