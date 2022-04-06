@@ -13,6 +13,7 @@ def day_ini():
     print("DAY:", str(day), ",", username.upper(), ",", "GOLD:", gold)
     l_inv.sort()
     print("YOUR INVENTORY CONTAINS:", l_inv)
+    print("YOUR SPELLS ARE:", l_spl)
     print("0. ???")
     print("1. SLEEP")
     print()
@@ -51,6 +52,7 @@ def debug_stats():
     print("DAY:", day)
     print("OPENER:", opener)
     print("INVENTORY:", l_inv)
+    print("SPELLS:", l_spl)
     print("MORALITY:", morality)
     print("DEBUG STATS")
 
@@ -68,6 +70,7 @@ day = 1
 year = 1
 opener = ''
 l_inv = []
+l_spl = []
 morality = 0
 gold = 0
 # -------------------------------------------------------------------------------
@@ -112,6 +115,10 @@ while True:
     elif e == 5 and 'KEY' not in l_inv:
         print("YOU NOTICED THE KEY HIDDEN IN YOUR BEDSHEET, AND PICKED IT UP.")
         print("YOU OBTAINED [KEY]")
+        print("NEXT TO THE KEY, YOU SEE A NOTE.")
+        print("YOU OBTAINED [NOTE FROM A FRIEND]")
+        print("IT READS: 'MEET ME BEHIND JOSHUA'S SHOP'")
+        l_inv.append('NOTE FROM A FRIEND')
         l_inv.append("KEY")
     else:  # VALIDATION
         print("UNKNOWN COMMAND.")
@@ -142,12 +149,12 @@ while True:
             print("THE GROUND SHAKES.")
             print("FROM IT, RISES A FIGURE.")
             print()
-            print("???:'", username.upper(), "'")
-            print("???: 'YOU KNOW YOU DESIRE TO GIVE ME THE COIN'")
-            print("???: 'WILL YOU SHOW ME YOUR ALLEGIANCE'")
+            print("IT: '", username.upper(), "'")
+            print("IT: 'YOU KNOW YOU DESIRE TO GIVE ME THE COIN'")
+            print("IT: 'WILL YOU SHOW ME YOUR ALLEGIANCE?'")
             print()
             print("1.YES 2.NO")
-            bc = int(input("???: "))
+            bc = int(input("GIVE 'IT' THE COIN?: "))
             clear()
             if bc == 1:
                 l_inv.remove('COIN?')
@@ -158,7 +165,9 @@ while True:
                 print("THE SHADOW FIGURE VANISHES")
     elif e == 3 and 'BOOK OF FLAME' not in l_inv:
         if 'MARK OF ZENO' in l_inv:
-        elif 'COIN?' in l_inv or 'MARK OF ZENO' in l_inv:
+            print("THE WALLS ARE BLOODSTAINED AND A SCORCH MARK IN THE SHAPE OF A MAN RESTS IN THE WALL")
+            print("YOU HAVE NO DESIRE TO SEE THIS FOR LONGER THAN YOU MUST")
+        elif 'COIN?' in l_inv:
             print("THERE IS A MAN IN THE CELL.")
             print("MAN: 'YOUNG ONE.'")
             print("MAN: 'I BESTOW UPON THEE UNUSUAL KNOWLEDGE.'")
@@ -193,6 +202,8 @@ while True:
             print("THE COIN IN YOUR POCKETS TURNED OUT TO BE AN EFFIGY TOKEN FROM THE MAD GOD ZENO.")
             l_inv.remove('KEY')
             l_inv.append('GOLDEN EFFIGY TO MAD GOD')
+            print("YOU HAVE OBTAINED (ELDRITCH ABSORPTION)")
+            l_spl.append('ELDRITCH ABSORPTION')
             morality -= 1
     else:
         print("UNKNOWN COMMAND.")
@@ -200,6 +211,73 @@ if 'COIN?' in l_inv:
     l_inv.remove('COIN?')
     print("UPON CLOSER INVESTIGATION, THIS WAS INDEED AN INCREDIBLY RARE IMPERIAL COIN")
     print("YOU OBTAINED 200 GOLD")
-    gold = gold + 200
-print("CONGRATULATIONS. THE GAME IS OVER FOR NOW.")
-debug_stats()
+    gold += 200
+print("YOU WALK PAST THE CELLS AND LEAVE THE DUNGEON ENTRANCE.")
+opener = "YOU FIND YOURSELF AT JOSHUA'S MARKET"
+additional = False
+while True:
+    day_ini()
+    print()
+    print('2. BUY')
+    print('3. SELL')
+    print("4. GO TO THE SHED BEHIND JOSHUA'S SHOP")
+    print("5. LOOK AROUND")
+    if 'ELDRITCH BLAST' in l_spl:
+        print("6. DESTROY JOSHUA'S MORTAL FLESH AND STEAL HIS SOUL")
+    e = int(input("DO: "))
+    if e == 1:
+        print("YOU FALL ASLEEP.")
+        day += 1
+    if e == 3:
+        print()
+        print("WHICH ITEM DO YOU WANT TO SELL?")
+        for i in l_inv:
+            print(i)
+        tc = str(input("ITEM: "))
+        if tc.upper() == 'COOL LADYBUG' and 'COOL LADYBUG' in l_inv:
+            print("VERY WELL. THAT WILL BE 20 GOLD.")
+            gold += 20
+            l_inv.remove('COOL LADYBUG')
+        elif tc.upper() == 'KEY' and 'KEY' in l_inv:
+            print("VERY WELL. THAT WILL BE 40 GOLD.")
+            gold += 40
+            l_inv.remove('KEY')
+        elif tc.upper() == 'MY SOUL' and not additional:
+            print("ነፍስህ ለዘላለም የኢያሱዋ ነች")
+            gold += 500
+            additional = True
+            morality -= 10
+        elif tc.upper() == 'BOOK OF FLAME' and 'BOOK OF FLAME' in l_inv:
+            print("THAT IS AN AMAZING FIND! THAT WILL BE 100 GOLD, AND A GIFT FROM ME.")
+            gold += 100
+            l_inv.remove('BOOK OF FLAME')
+            l_inv.append('JOSHUA SOUVENIR')
+            print("YOU OBTAINED [JOSHUA SOUVENIR]")
+
+        else:
+            print("NOT A SELLABLE ITEM.")
+    if e == 2:
+        print("WHICH ITEM DO YOU WANT TO BUY?")
+        if 'BOMB' not in l_inv:
+            print("BOMB: 50 GOLD")
+        if 'FOLDING SWORD' not in l_inv:
+            print("FOLDING SWORD: 200 GOLD")
+        tc = str(input("BUY: "))
+        if tc == 'BOMB' and gold >= 50:
+            print("YOU OBTAINED [BOMB]")
+            gold -= 50
+            l_inv.append('BOMB')
+        elif tc == 'FOLDING SWORD' and gold >= 200:
+            print("YOU OBTAINED [FOLDING SWORD]")
+            l_inv.append('FOLDING SWORD')
+            gold -= 200
+        else:
+            print("UNKNOWN ITEM.")
+    if e == 4:
+        break
+    if e == 5:
+        print("YOU FIND A ROCK.")
+        print("YOU OBTAINED [ROCK]")
+    if e == 6 and 'ELDRITCH BLAST' in l_spl:
+        print("THE ABSORPTION OF A HUMAN SOUL MAKES YOU STRONGER.")
+        print("YOU HAVE OBTAINED {JOSHUA'S SOUL}")
