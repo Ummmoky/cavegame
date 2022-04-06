@@ -14,6 +14,8 @@ def day_ini():
     l_inv.sort()
     print("YOUR INVENTORY CONTAINS:", l_inv)
     print("YOUR SPELLS ARE:", l_spl)
+    if len(l_soul) >= 1:
+        print("ነፍሳት ተሰብስበዋል:", l_soul)
     print("0. ???")
     print("1. SLEEP")
     print()
@@ -61,7 +63,10 @@ def debug_stats():
 # -------------------------------------------------------------------------------
 # INTRO|
 # -------------------------------------------------------------------------------
-username = str(input("What's your name?: "))
+try:
+    username = str(input("WHAT IS YOUR NAME?: "))
+except ValueError:
+    print("INVALID NAME BUCKO")
 clear()
 print("WELCOME TO CAVE GAME, " + username.upper() + "!")
 # -------------------------------------------------------------------------------
