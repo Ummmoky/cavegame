@@ -53,6 +53,7 @@ def debug_stats():
     print("OPENER:", opener)
     print("INVENTORY:", l_inv)
     print("SPELLS:", l_spl)
+    print("SOULS:", l_soul)
     print("MORALITY:", morality)
     print("DEBUG STATS")
 
@@ -71,6 +72,7 @@ year = 1
 opener = ''
 l_inv = []
 l_spl = []
+l_soul = []
 morality = 0
 gold = 0
 # -------------------------------------------------------------------------------
@@ -222,7 +224,7 @@ while True:
     print('3. SELL')
     print("4. GO TO THE SHED BEHIND JOSHUA'S SHOP")
     print("5. LOOK AROUND")
-    if 'ELDRITCH BLAST' in l_spl:
+    if 'ELDRITCH ABSORPTION' in l_spl:
         print("6. DESTROY JOSHUA'S MORTAL FLESH AND STEAL HIS SOUL")
     e = int(input("DO: "))
     if e == 1:
@@ -278,6 +280,7 @@ while True:
     if e == 5:
         print("YOU FIND A ROCK.")
         print("YOU OBTAINED [ROCK]")
-    if e == 6 and 'ELDRITCH BLAST' in l_spl:
+    if e == 6 and 'ELDRITCH ABSORPTION' in l_spl:
         print("THE ABSORPTION OF A HUMAN SOUL MAKES YOU STRONGER.")
         print("YOU HAVE OBTAINED {JOSHUA'S SOUL}")
+        l_soul.append("JOSHUA'S SOUL")
