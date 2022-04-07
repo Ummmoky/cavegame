@@ -10,13 +10,13 @@ import random
 
 def day_ini():
     print()
-    print("DAY:", str(day), ",", username.upper(), ",", "GOLD:", gold)
+    print("DAY:", str(day), ",", username.upper(), 'THE', title, ",", "GOLD:", gold)
     l_inv.sort()
     print("YOUR INVENTORY CONTAINS:", l_inv)
     print("YOUR SPELLS ARE:", l_spl)
     if len(l_soul) >= 1:
         print("ነፍሳት ተሰብስበዋል:", l_soul)
-    print("0. ???")
+    print("0. STATS")
     print("1. SLEEP")
     print()
     print(opener)
@@ -25,29 +25,11 @@ def day_ini():
 def clear():
     print()
     print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
 
 
 def debug_stats():
     print("DEBUGGING...")
+    print()
     print("GOLD:", gold)
     print("USERNAME:", username)
     print("ADDITIONAL:", additional)
@@ -57,16 +39,28 @@ def debug_stats():
     print("SPELLS:", l_spl)
     print("SOULS:", l_soul)
     print("MORALITY:", morality)
+    print()
     print("DEBUG STATS")
+
+
+def print_stats():
+    print(username, 'THE', title)
+    print(gold, 'GOLD')
+    print("TITLES:", title_list)
+    print('REPUTATION:', morality)
+    print("DAY:", day)
 
 
 # -------------------------------------------------------------------------------
 # INTRO|
 # -------------------------------------------------------------------------------
-try:
-    username = str(input("WHAT IS YOUR NAME?: "))
-except ValueError:
-    print("INVALID NAME BUCKO")
+while True:
+    try:
+        username = str(input("WHAT IS YOUR NAME?: "))
+        username = username.upper()
+        break
+    except ValueError:
+        print("INVALID NAME")
 clear()
 print("WELCOME TO CAVE GAME, " + username.upper() + "!")
 # -------------------------------------------------------------------------------
@@ -74,12 +68,13 @@ print("WELCOME TO CAVE GAME, " + username.upper() + "!")
 # -------------------------------------------------------------------------------
 day = 1
 year = 1
-opener = ''
 l_inv = []
 l_spl = []
 l_soul = []
 morality = 0
 gold = 0
+title = 'PRISONER'
+title_list = ['PRISONER']
 # -------------------------------------------------------------------------------
 # Dungeon cell|
 # -------------------------------------------------------------------------------
@@ -87,7 +82,6 @@ additional = False
 opener = "YOU FIND YOURSELF IN A DUNGEON CELL."
 while True:
     day_ini()
-    print()
     print("2. LOOK THROUGH THE WINDOW")
     if 'KEY' in l_inv:
         print("3. UNLOCK AND OPEN DOOR")
@@ -97,10 +91,16 @@ while True:
         print("4. PICK UP COOL LADYBUG")
     if day >= 3 and 'KEY' not in l_inv:
         print("5. YOU NOTICE AN OBJECT IN YOUR BEDSHEETS. PICK UP?")
-    e = int(input("WHAT WILL YOU DO?: "))
+    try:
+        e = int(input("WHAT WILL YOU DO?: "))
+    except ValueError:
+        print("UNKNOWN INPUT")
+        e = 0
     clear()
     print()
-    if e == 1:
+    if e == 0:
+        print_stats()
+    elif e == 1:
         print("YOU FALL ASLEEP.")
         day = day + 1
     elif e == 2:
@@ -145,9 +145,16 @@ while True:
     print("5.MOVE FORWARDS")
     if 'BOOK OF FLAME' in l_inv and 'COOL LADYBUG' in l_inv:
         print("6. BURN LADYBUG AS A SACRIFICIAL EFFIGY TO THE THIRD CELL")
-    e = int(input("WHAT WILL YOU DO?: "))
+    while True:
+        try:
+            e = int(input("WHAT WILL YOU DO?: "))
+            break
+        except ValueError:
+            print("UNKNOWN INPUT")
     clear()
-    if e == 1:
+    if e == 0:
+        print_stats()
+    elif e == 1:
         print("YOU FALL ASLEEP.")
         day += 1
     elif e == 2:
@@ -161,7 +168,11 @@ while True:
             print("IT: 'WILL YOU SHOW ME YOUR ALLEGIANCE?'")
             print()
             print("1.YES 2.NO")
-            bc = int(input("GIVE 'IT' THE COIN?: "))
+            try:
+                bc = int(input("GIVE 'IT' THE COIN?: "))
+            except ValueError:
+                print("INVALID ID.")
+                bc = 0
             clear()
             if bc == 1:
                 l_inv.remove('COIN?')
@@ -181,7 +192,11 @@ while True:
             print("MAN: 'JUST GIVE ME THE SHINY.'")
             print()
             print("1.YES 2.NO")
-            bc = int(input("WILL YOU GIVE HIM THE COIN?: "))
+            try:
+                bc = int(input("WILL YOU GIVE HIM THE COIN?: "))
+            except ValueError:
+                print("ANSWER, COWARD")
+                bc = 0
             clear()
             if bc == 1:
                 l_inv.remove('COIN?')
@@ -229,18 +244,24 @@ while True:
     print('3. SELL')
     print("4. GO TO THE SHED BEHIND JOSHUA'S SHOP")
     print("5. LOOK AROUND")
-    if 'ELDRITCH ABSORPTION' in l_spl:
+    if 'ELDRITCH ABSORPTION' in l_spl and "JOSHUA'S SOUL" not in l_soul:
         print("6. DESTROY JOSHUA'S MORTAL FLESH AND STEAL HIS SOUL")
-    e = int(input("DO: "))
-    if e == 1:
+    try:
+        e = int(input("DO: "))
+    except ValueError:
+        print("UNKNOWN INPUT.")
+    if e == 0:
+        print_stats()
+    elif e == 1:
         print("YOU FALL ASLEEP.")
         day += 1
-    if e == 3:
+    if e == 3 and "JOSHUA'S SOUL" not in l_soul:
         print()
         print("WHICH ITEM DO YOU WANT TO SELL?")
         for i in l_inv:
             print(i)
         tc = str(input("ITEM: "))
+        tc = tc.upper()
         if tc.upper() == 'COOL LADYBUG' and 'COOL LADYBUG' in l_inv:
             print("VERY WELL. THAT WILL BE 20 GOLD.")
             gold += 20
@@ -254,6 +275,8 @@ while True:
             gold += 500
             additional = True
             morality -= 10
+            title = 'SOULLESS'
+            title_list.append(title)
         elif tc.upper() == 'BOOK OF FLAME' and 'BOOK OF FLAME' in l_inv:
             print("THAT IS AN AMAZING FIND! THAT WILL BE 100 GOLD, AND A GIFT FROM ME.")
             gold += 100
@@ -263,13 +286,19 @@ while True:
 
         else:
             print("NOT A SELLABLE ITEM.")
-    if e == 2:
+    if e == 2 and "JOSHUA'S SOUL" not in l_soul:
         print("WHICH ITEM DO YOU WANT TO BUY?")
         if 'BOMB' not in l_inv:
             print("BOMB: 50 GOLD")
         if 'FOLDING SWORD' not in l_inv:
             print("FOLDING SWORD: 200 GOLD")
-        tc = str(input("BUY: "))
+        while True:
+            try:
+                tc = str(input("BUY: "))
+                break
+            except ValueError:
+                print("Invalid ID")
+        tc = tc.upper()
         if tc == 'BOMB' and gold >= 50:
             print("YOU OBTAINED [BOMB]")
             gold -= 50
@@ -282,10 +311,15 @@ while True:
             print("UNKNOWN ITEM.")
     if e == 4:
         break
-    if e == 5:
+    if e == 5 and 'ROCK' not in l_inv:
         print("YOU FIND A ROCK.")
         print("YOU OBTAINED [ROCK]")
-    if e == 6 and 'ELDRITCH ABSORPTION' in l_spl:
+        l_inv.append('ROCK')
+    if e == 6 and 'ELDRITCH ABSORPTION' in l_spl and "JOSHUA'S SOUL" not in l_soul:
         print("THE ABSORPTION OF A HUMAN SOUL MAKES YOU STRONGER.")
         print("YOU HAVE OBTAINED {JOSHUA'S SOUL}")
         l_soul.append("JOSHUA'S SOUL")
+if 'ROCK' in l_inv:
+    print("YOU HAVE DECIDED TO NAME YOUR ROCK MATHIAS")
+    l_inv.remove('ROCK')
+    l_inv.append('MATHIAS, THE ROCK')
