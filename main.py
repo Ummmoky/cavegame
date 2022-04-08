@@ -65,7 +65,7 @@ clear()
 print("WELCOME TO CAVE GAME, " + username.upper() + "!")
 # -------------------------------------------------------------------------------
 # Var|
-# -------------------------------------------------------------------------------
+# --------------------------------d-----------------------------------------------
 day = 1
 year = 1
 l_inv = []
@@ -92,34 +92,35 @@ while True:
     if day >= 3 and 'KEY' not in l_inv:
         print("5. YOU NOTICE AN OBJECT IN YOUR BEDSHEETS. PICK UP?")
     try:
-        e = int(input("WHAT WILL YOU DO?: "))
+        e = input("WHAT WILL YOU DO?: ")
     except ValueError:
         print("UNKNOWN INPUT")
-        e = 0
+        e = '0'
     clear()
     print()
-    if e == 0:
+    e = e.upper()
+    if e.startswith('0') or 'STATS' in e:
         print_stats()
-    elif e == 1:
+    elif e.startswith('1') or 'SLEEP' in e:
         print("YOU FALL ASLEEP.")
         day = day + 1
-    elif e == 2:
+    elif any(i in e for i in ['LOOK', 'WINDOW']):
         print("YOU SEE A LARGE KINGDOM, AND A SLIGHT CRACK IN THE WALL.")
         if 'COOL LADYBUG' in l_inv:
             print("A COOL LADYBUG ONCE RESTED HERE.")
         else:
-            print("A COOL LADYBUG PERCHES ITSELF UPON THE WINDOW.")
+            print("A COOL LADYBUG SITS ATOP THE WINDOWSILL.")
         additional = True
-    elif e == 3:
+    elif any(i in e for i in ['OPEN', 'UNLOCK', 'TRY', '3', 'DOOR']):
         if 'KEY' in l_inv:
             print("CONGRATULATIONS. THE DOOR IS UNLOCKED.")
             break  # LOOP BREAK
         else:
             print("THE DOOR WILL NOT BUDGE.")
-    elif e == 4 and 'COOL LADYBUG' not in l_inv:
+    elif any(i in e for i in ['4', 'LADYBUG', 'BUG', 'PICK UP']) and 'COOL LADYBUG' not in l_inv:
         print("YOU OBTAINED [COOL LADYBUG].")
         l_inv.append('COOL LADYBUG')
-    elif e == 5 and 'KEY' not in l_inv:
+    elif any(i in e for i in ['5', 'OBJECT', 'KEY', 'NOTE', 'BEDSHEET']) and 'KEY' not in l_inv:
         print("YOU NOTICED THE KEY HIDDEN IN YOUR BEDSHEET, AND PICKED IT UP.")
         print("YOU OBTAINED [KEY]")
         print("NEXT TO THE KEY, YOU SEE A NOTE.")
@@ -320,6 +321,6 @@ while True:
         print("YOU HAVE OBTAINED {JOSHUA'S SOUL}")
         l_soul.append("JOSHUA'S SOUL")
 if 'ROCK' in l_inv:
-    print("YOU HAVE DECIDED TO NAME YOUR ROCK MATHIAS")
+    print("YOU HAVE DECIDED TO NAME YOUR ROCK DWAYNE")
     l_inv.remove('ROCK')
-    l_inv.append('MATHIAS, THE ROCK')
+    l_inv.append('DWAYNE, THE ROCK')
